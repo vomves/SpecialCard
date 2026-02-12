@@ -4,17 +4,12 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Valentine</title>
-  <meta name="theme-color" content="#ff3b7a" />
+  <meta name="theme-color" content="#ff2d78" />
   <style>
     :root{
       --bg1:#0b1020; --bg2:#1a0b2e;
       --ring:#ffffff26;
-      --card:#0b1220cc;
       --txt:#e8eefc; --muted:#b7c1da;
-      --paper:#f6f1e7;
-      --paper2:#efe6d6;
-      --ink:#1b2437;
-      --ink2:#3a4863;
       --yes1:#ff2d78; --yes2:#ff7ab6;
       --no1:#334155; --no2:#1f2937;
       --shadow: 0 24px 70px #0009;
@@ -48,7 +43,7 @@
       width:min(860px, 94vw);
       border:1px solid var(--ring);
       border-radius:28px;
-      background: linear-gradient(180deg, var(--card), #0b1220a8);
+      background: linear-gradient(180deg, #0b1220cc, #0b1220a8);
       backdrop-filter: blur(10px);
       box-shadow: var(--shadow);
       padding: 26px 20px 18px;
@@ -61,14 +56,12 @@
       place-items:center;
       padding: 18px 0 10px;
     }
-
     .envelope{
       width:min(520px, 92vw);
       height: 320px;
       position:relative;
       border-radius:22px;
       filter: drop-shadow(0 18px 28px #0007);
-      transform: translateZ(0);
       cursor:pointer;
       user-select:none;
     }
@@ -94,7 +87,6 @@
       background: linear-gradient(180deg, #24314f, #121a2e);
       border-bottom:1px solid #ffffff14;
       transform-origin: top center;
-      transition: transform 650ms cubic-bezier(.2,.9,.2,1);
     }
     .seal{
       position:absolute;
@@ -104,9 +96,6 @@
       border-radius:999px;
       background: radial-gradient(circle at 30% 30%, #ff7ab6, #ff2d78 55%, #d61b5f);
       box-shadow: 0 14px 30px #ff2d7830, inset 0 2px 10px #ffffff22;
-      display:grid; place-items:center;
-      font-weight:900; letter-spacing:.02em;
-      color:#ffffff;
       border:1px solid #ffffff2a;
     }
     .addr{
@@ -139,96 +128,55 @@
       text-overflow:ellipsis;
       max-width: 220px;
     }
-    .open-hint{
+    .hint{
       margin-top:14px;
       color: var(--muted);
       font-size:14px;
       text-align:center;
       opacity:.95;
     }
-    .open-btn{
-      margin-top:12px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      border:1px solid var(--ring);
-      background:#ffffff0a;
-      color:#e8eefc;
-      padding:12px 16px;
-      border-radius:14px;
-      font-weight:800;
-      letter-spacing:.02em;
-      cursor:pointer;
-      transition: transform .12s ease, filter .12s ease;
-      user-select:none;
-    }
-    .open-btn:hover{filter:brightness(1.06)}
-    .open-btn:active{transform:scale(.99)}
 
-    /* ===== Letter view ===== */
-    .letterWrap{
-      width:min(720px, 92vw);
+    /* ===== Card view (the old vibe, clean) ===== */
+    .cardView{
       display:none;
-      position:relative;
-      transform: translateY(10px);
       opacity:0;
-      transition: opacity 300ms ease, transform 300ms ease;
+      transform: translateY(10px);
+      transition: opacity 260ms ease, transform 260ms ease;
+      padding: 8px 0 0;
     }
-    .letter{
+    .card{
+      width:min(760px, 92vw);
+      border:1px solid var(--ring);
       border-radius:24px;
-      background:
-        radial-gradient(900px 520px at 20% 0%, #ffffff50, transparent 58%),
-        linear-gradient(180deg, var(--paper), var(--paper2));
-      border:1px solid #00000014;
-      box-shadow: 0 18px 48px #0006;
-      padding: 22px 20px 20px;
-      color: var(--ink);
+      padding:26px 22px 22px;
+      background: linear-gradient(180deg, #0b1220cc, #0b1220aa);
+      box-shadow: 0 18px 50px #0008;
       position:relative;
-      overflow:hidden;
-    }
-    .paper-grain{
-      position:absolute; inset:0;
-      background-image:
-        radial-gradient(circle at 20% 30%, #00000008 0 1px, transparent 1px),
-        radial-gradient(circle at 70% 55%, #00000006 0 1px, transparent 1px);
-      background-size: 28px 28px;
-      opacity:.6;
-      pointer-events:none;
-      mix-blend-mode:multiply;
+      margin: 0 auto;
     }
     .title{
-      margin:2px 0 18px;
+      margin:2px 0 16px;
       font-size: clamp(28px, 4.2vw, 44px);
       line-height:1.06;
       letter-spacing:-0.02em;
       text-align:center;
-      color:#121a2e;
     }
-
     .panel{
-      position:relative;
-      margin: 0 auto;
-      border-radius:18px;
-      border:1px solid #00000014;
-      background:#ffffffaa;
+      margin-top:6px;
       padding:18px;
+      border-radius:18px;
+      border:1px solid var(--ring);
+      background:#0b1220a8;
+      position:relative;
       overflow:hidden;
     }
     .row{
-      display:flex;
-      gap:14px;
-      flex-wrap:wrap;
-      align-items:center;
-      justify-content:center;
-      margin-top:6px;
+      display:flex; gap:14px; flex-wrap:wrap; align-items:center; justify-content:center;
+      margin-top:10px;
     }
     button{
-      border:none;
-      cursor:pointer;
-      font-weight:900;
-      letter-spacing:.06em;
-      text-transform:uppercase;
+      border:none; cursor:pointer;
+      font-weight:900; letter-spacing:.06em; text-transform:uppercase;
       padding:14px 18px;
       border-radius:14px;
       min-width:170px;
@@ -245,7 +193,7 @@
     .no{
       background: linear-gradient(135deg, var(--no1), var(--no2));
       color:#e2e8f0;
-      box-shadow: 0 14px 26px #0004;
+      box-shadow: 0 14px 26px #0006;
       position:relative;
     }
 
@@ -257,10 +205,10 @@
     .result img{
       width:min(520px, 100%);
       border-radius:18px;
-      border:1px solid #0000001a;
-      box-shadow: 0 18px 40px #0004;
+      border:1px solid #ffffff26;
+      box-shadow: 0 18px 40px #0006;
       opacity:0;
-      transform: scale(.98);
+      transform: scale(.985);
       transition: opacity 280ms ease, transform 280ms ease;
     }
     .result.show img{
@@ -268,38 +216,20 @@
       transform: scale(1);
     }
 
-    .xbtn{
-      position:absolute;
-      right:14px; top:12px;
-      width:40px; height:40px;
-      border-radius:12px;
-      border:1px solid #00000014;
-      background:#ffffffcc;
-      color:#23304d;
-      font-weight:900;
-      cursor:pointer;
-      display:grid; place-items:center;
-      user-select:none;
-    }
-    .xbtn:hover{filter:brightness(1.02)}
-    .xbtn:active{transform:scale(.98)}
-
-    /* state: opening animation */
-    .opening .env-flap{ transform: rotateX(165deg); }
-    .hide{ display:none !important; }
+    .hide{display:none !important;}
   </style>
 </head>
 <body>
   <div class="dust" id="dust" aria-hidden="true"></div>
 
   <div class="wrap" id="wrap">
-    <!-- Envelope -->
+    <!-- Envelope screen -->
     <div class="stage" id="stage">
       <div class="envelope" id="envelope" role="button" aria-label="Open letter" tabindex="0">
         <div class="env-body">
           <div class="env-liner"></div>
-          <div class="env-flap" id="flap"></div>
-          <div class="seal">BB</div>
+          <div class="env-flap"></div>
+          <div class="seal" aria-hidden="true"></div>
 
           <div class="addr">
             <div>
@@ -313,17 +243,12 @@
           </div>
         </div>
       </div>
-
-      <div class="open-hint">Tap the envelope to open the letter.</div>
-      <div class="open-btn" id="openBtn">OPEN</div>
+      <div class="hint">Tap the envelope to open.</div>
     </div>
 
-    <!-- Letter -->
-    <div class="letterWrap" id="letterWrap">
-      <div class="letter">
-        <div class="paper-grain"></div>
-        <div class="xbtn" id="closeBtn" title="Close">×</div>
-
+    <!-- Valentine card screen -->
+    <div class="cardView" id="cardView">
+      <div class="card">
         <h1 class="title">Will you be my Valentine?</h1>
 
         <div class="panel" id="panel">
@@ -333,7 +258,6 @@
           </div>
 
           <div class="result" id="result">
-            <!-- IMPORTANT: image file name here -->
             <img id="yesImg" src="yes.jpg" alt="Valentine" />
           </div>
         </div>
@@ -342,7 +266,7 @@
   </div>
 
   <script>
-    // Personalization via URL params: ?from=bb&to=bb
+    // URL params: ?from=bb&to=bb
     const params = new URLSearchParams(location.search);
     const to = (params.get("to") || "bb").trim() || "bb";
     const from = (params.get("from") || "bb").trim() || "bb";
@@ -365,83 +289,46 @@
       dustEl.appendChild(d);
     }
 
-    // Open/close letter
-    const wrap = document.getElementById("wrap");
+    // Switch screens (no ugly envelope-open animation)
     const stage = document.getElementById("stage");
     const envelope = document.getElementById("envelope");
-    const openBtn = document.getElementById("openBtn");
-    const letterWrap = document.getElementById("letterWrap");
-    const closeBtn = document.getElementById("closeBtn");
+    const cardView = document.getElementById("cardView");
 
-    function openLetter(){
-      wrap.classList.add("opening");
-      // show letter after flap anim starts
-      setTimeout(() => {
-        stage.classList.add("hide");
-        letterWrap.style.display = "block";
-        requestAnimationFrame(() => {
-          letterWrap.style.opacity = "1";
-          letterWrap.style.transform = "translateY(0)";
-        });
-      }, 420);
+    function openToCard(){
+      stage.classList.add("hide");
+      cardView.style.display = "block";
+      requestAnimationFrame(() => {
+        cardView.style.opacity = "1";
+        cardView.style.transform = "translateY(0)";
+      });
     }
 
-    function closeLetter(){
-      // reset letter UI
-      resetInside();
-      letterWrap.style.opacity = "0";
-      letterWrap.style.transform = "translateY(10px)";
-      setTimeout(() => {
-        letterWrap.style.display = "none";
-        stage.classList.remove("hide");
-        wrap.classList.remove("opening");
-      }, 260);
-    }
-
-    envelope.addEventListener("click", openLetter);
+    envelope.addEventListener("click", openToCard);
     envelope.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" || e.key === " ") openLetter();
+      if (e.key === "Enter" || e.key === " ") openToCard();
     });
-    openBtn.addEventListener("click", openLetter);
-    closeBtn.addEventListener("click", closeLetter);
 
-    // Buttons logic
+    // YES shows image
     const yesBtn = document.getElementById("yesBtn");
     const noBtn = document.getElementById("noBtn");
     const result = document.getElementById("result");
     const yesImg = document.getElementById("yesImg");
-    const panel = document.getElementById("panel");
 
-    // Preload image (helps on mobile)
-    const imgPreload = new Image();
-    imgPreload.src = yesImg.src;
+    // preload image
+    const pre = new Image();
+    pre.src = yesImg.src;
 
-    function showYes(){
+    yesBtn.addEventListener("click", () => {
       yesBtn.disabled = true;
       noBtn.disabled = true;
       result.style.display = "block";
-      // small fade/zoom
       requestAnimationFrame(() => result.classList.add("show"));
-    }
+    });
 
-    function resetInside(){
-      yesBtn.disabled = false;
-      noBtn.disabled = false;
-      result.classList.remove("show");
-      result.style.display = "none";
-      // reset NO position
-      noBtn.style.position = "relative";
-      noBtn.style.left = "";
-      noBtn.style.top = "";
-      noBtn.style.transform = "";
-      noCount = 0;
-    }
-
-    yesBtn.addEventListener("click", showYes);
-
-    // NO button dodges, but stays cute (limited dodges)
+    // NO button dodge (cute, limited)
+    const panel = document.getElementById("panel");
     let noCount = 0;
-    const maxDodges = 6;
+    const maxDodges = 7;
 
     function dodge(){
       if (noBtn.disabled) return;
@@ -450,10 +337,9 @@
       const panelRect = panel.getBoundingClientRect();
       const btnRect = noBtn.getBoundingClientRect();
 
-      // keep inside panel
       const pad = 14;
       const maxX = Math.max(0, panelRect.width - btnRect.width - pad*2);
-      const maxY = 120; // keep it near the buttons area
+      const maxY = 140;
 
       const x = pad + Math.random() * maxX;
       const y = 64 + Math.random() * Math.max(20, maxY);
@@ -463,10 +349,8 @@
       noBtn.style.top = y + "px";
       noBtn.style.transform = "rotate(" + ((Math.random()*10)-5).toFixed(0) + "deg)";
 
-      // after enough dodges, stop moving (so it doesn't get annoying)
       if (noCount >= maxDodges){
         noBtn.removeEventListener("mouseenter", dodge);
-        // still clickable, but it won't keep running forever
       }
     }
 
