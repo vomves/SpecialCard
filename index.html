@@ -3,15 +3,15 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Valentine</title>
-  <meta name="theme-color" content="#ff2d78" />
+  <title>Valentine?</title>
+  <meta name="theme-color" content="#ff3b7a" />
   <style>
     :root{
       --bg1:#0b1020; --bg2:#1a0b2e;
-      --ring:#ffffff26;
-      --txt:#e8eefc; --muted:#b7c1da;
+      --card:#0f172aee; --txt:#e8eefc; --muted:#b7c1da;
       --yes1:#ff2d78; --yes2:#ff7ab6;
       --no1:#334155; --no2:#1f2937;
+      --ring:#ffffff26;
       --shadow: 0 24px 70px #0009;
     }
     *{box-sizing:border-box}
@@ -20,23 +20,23 @@
       color:var(--txt);
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
       background:
-        radial-gradient(1200px 700px at 20% 10%, #ff2d7820, transparent 55%),
-        radial-gradient(900px 600px at 80% 30%, #7c3aed1c, transparent 60%),
-        radial-gradient(900px 700px at 50% 90%, #22c55e12, transparent 55%),
+        radial-gradient(1200px 700px at 20% 10%, #ff2d7826, transparent 55%),
+        radial-gradient(900px 600px at 80% 30%, #7c3aed22, transparent 60%),
+        radial-gradient(900px 700px at 50% 90%, #22c55e15, transparent 55%),
         linear-gradient(160deg, var(--bg1), var(--bg2));
       overflow:hidden;
     }
 
-    /* subtle particles */
-    .dust{position:fixed; inset:0; pointer-events:none; opacity:.55;}
-    .dot{
-      position:absolute; width:3px; height:3px; border-radius:999px;
-      background:#ffffff20;
-      animation: drift linear infinite;
+    /* floating hearts background (cute but subtle) */
+    .hearts{position:fixed; inset:0; pointer-events:none; opacity:.55; filter: drop-shadow(0 8px 18px #0008);}
+    .heart{
+      position:absolute; font-size: clamp(14px, 2.4vw, 22px);
+      animation: floatUp linear infinite;
+      transform: translateY(110vh);
+      will-change: transform;
     }
-    @keyframes drift{
-      from{ transform: translateY(110vh) translateX(0); }
-      to{ transform: translateY(-140vh) translateX(var(--dx)); }
+    @keyframes floatUp{
+      to { transform: translateY(-140vh) translateX(var(--drift)); }
     }
 
     .wrap{
@@ -50,7 +50,7 @@
       position:relative;
     }
 
-    /* ===== Envelope view ===== */
+    /* ===== Envelope screen ===== */
     .stage{
       display:grid;
       place-items:center;
@@ -64,6 +64,7 @@
       filter: drop-shadow(0 18px 28px #0007);
       cursor:pointer;
       user-select:none;
+      outline:none;
     }
     .env-body{
       position:absolute; inset:0;
@@ -86,7 +87,6 @@
       clip-path: polygon(0 0, 100% 0, 50% 100%);
       background: linear-gradient(180deg, #24314f, #121a2e);
       border-bottom:1px solid #ffffff14;
-      transform-origin: top center;
     }
     .seal{
       position:absolute;
@@ -117,7 +117,7 @@
       margin-bottom:6px;
       letter-spacing:.08em;
       text-transform:uppercase;
-      opacity:.8;
+      opacity:.85;
     }
     .addr b{
       display:block;
@@ -136,7 +136,7 @@
       opacity:.95;
     }
 
-    /* ===== Card view (the old vibe, clean) ===== */
+    /* ===== Valentine card (pretty like the first one) ===== */
     .cardView{
       display:none;
       opacity:0;
@@ -148,39 +148,76 @@
       width:min(760px, 92vw);
       border:1px solid var(--ring);
       border-radius:24px;
-      padding:26px 22px 22px;
+      padding:28px 24px 22px;
       background: linear-gradient(180deg, #0b1220cc, #0b1220aa);
       box-shadow: 0 18px 50px #0008;
       position:relative;
       margin: 0 auto;
+      overflow:hidden;
     }
+    /* soft glow corners */
+    .card::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(380px 260px at 10% 10%, #ff2d7822, transparent 60%),
+        radial-gradient(380px 260px at 90% 15%, #7c3aed20, transparent 60%),
+        radial-gradient(420px 320px at 50% 110%, #22c55e14, transparent 60%);
+      pointer-events:none;
+    }
+
+    .badge{
+      position:relative;
+      display:inline-flex; align-items:center; gap:10px;
+      padding:10px 14px; border-radius:999px;
+      border:1px solid var(--ring);
+      background:#ffffff0a;
+      color:var(--muted);
+      font-size:14px;
+      margin-bottom:14px;
+    }
+    .badge b{color:var(--txt)}
     .title{
-      margin:2px 0 16px;
+      position:relative;
+      margin:0 0 8px;
       font-size: clamp(28px, 4.2vw, 44px);
       line-height:1.06;
       letter-spacing:-0.02em;
-      text-align:center;
+      text-align:left;
     }
+    .subtitle{
+      position:relative;
+      margin:10px 0 0;
+      color:var(--muted);
+      font-size: clamp(15px, 2.2vw, 18px);
+      line-height:1.45;
+    }
+
     .panel{
-      margin-top:6px;
+      position:relative;
+      margin-top:18px;
       padding:18px;
       border-radius:18px;
       border:1px solid var(--ring);
       background:#0b1220a8;
-      position:relative;
       overflow:hidden;
+      min-height: 170px; /* ensures NO button can move without leaving panel */
     }
+
     .row{
+      position:relative;
       display:flex; gap:14px; flex-wrap:wrap; align-items:center; justify-content:center;
       margin-top:10px;
+      padding-bottom: 6px;
     }
+
     button{
       border:none; cursor:pointer;
       font-weight:900; letter-spacing:.06em; text-transform:uppercase;
       padding:14px 18px;
       border-radius:14px;
       min-width:170px;
-      transition: transform .12s ease, filter .12s ease;
+      transition: transform .12s ease, filter .12s ease, opacity .2s ease;
       user-select:none;
     }
     button:active{transform: scale(.98)}
@@ -189,18 +226,35 @@
       color:white;
       box-shadow: 0 14px 30px #ff2d7830;
     }
-    .yes:hover{filter:brightness(1.05)}
+    .yes:hover{filter:brightness(1.06)}
     .no{
       background: linear-gradient(135deg, var(--no1), var(--no2));
       color:#e2e8f0;
       box-shadow: 0 14px 26px #0006;
       position:relative;
+      z-index:2;
+    }
+
+    .prompt{
+      position:relative;
+      margin-top:12px;
+      text-align:center;
+      color:#cbd5e1;
+      font-weight:700;
+      font-size:14px;
+      min-height: 20px;
     }
 
     .result{
       margin-top:16px;
       display:none;
       text-align:center;
+    }
+    .dateTitle{
+      font-size: clamp(20px, 2.8vw, 26px);
+      font-weight:900;
+      letter-spacing:-0.01em;
+      margin: 0 0 12px;
     }
     .result img{
       width:min(520px, 100%);
@@ -220,9 +274,9 @@
   </style>
 </head>
 <body>
-  <div class="dust" id="dust" aria-hidden="true"></div>
+  <div class="hearts" id="hearts" aria-hidden="true"></div>
 
-  <div class="wrap" id="wrap">
+  <div class="wrap">
     <!-- Envelope screen -->
     <div class="stage" id="stage">
       <div class="envelope" id="envelope" role="button" aria-label="Open letter" tabindex="0">
@@ -249,15 +303,21 @@
     <!-- Valentine card screen -->
     <div class="cardView" id="cardView">
       <div class="card">
+        <div class="badge">💌 <span>For</span> <b id="toBadge">bb</b></div>
+
         <h1 class="title">Will you be my Valentine?</h1>
+        <p class="subtitle">One question. Two buttons. Only one correct answer.</p>
 
         <div class="panel" id="panel">
-          <div class="row">
+          <div class="row" id="row">
             <button class="yes" id="yesBtn">YES</button>
             <button class="no" id="noBtn">NO</button>
           </div>
 
+          <div class="prompt" id="prompt"></div>
+
           <div class="result" id="result">
+            <div class="dateTitle">It’s date night!</div>
             <img id="yesImg" src="yes.jpg" alt="Valentine" />
           </div>
         </div>
@@ -272,24 +332,29 @@
     const from = (params.get("from") || "bb").trim() || "bb";
     document.getElementById("toName").textContent = to;
     document.getElementById("fromName").textContent = from;
+    document.getElementById("toBadge").textContent = to;
 
-    // Subtle dust particles
-    const dustEl = document.getElementById("dust");
-    const dots = 26;
-    for (let i=0;i<dots;i++){
-      const d = document.createElement("div");
-      d.className = "dot";
-      d.style.left = (Math.random()*100) + "vw";
-      d.style.top = (-Math.random()*120) + "vh";
-      const dur = 16 + Math.random()*18;
-      d.style.animationDuration = dur + "s";
-      d.style.animationDelay = (-Math.random()*dur) + "s";
-      d.style.setProperty("--dx", (Math.random()*120 - 60).toFixed(0) + "px");
-      d.style.opacity = (0.20 + Math.random()*0.35).toFixed(2);
-      dustEl.appendChild(d);
+    // Floating hearts (subtle, non-cheesy)
+    const heartsEl = document.getElementById("hearts");
+    const heartChars = ["💗","💖","💘","💝","💞","💕","💓","❤️","✨"];
+    const count = 18;
+    for (let i=0; i<count; i++){
+      const s = document.createElement("div");
+      s.className = "heart";
+      s.textContent = heartChars[Math.floor(Math.random()*heartChars.length)];
+      const left = Math.random()*100;
+      const dur = 12 + Math.random()*16;
+      const delay = -Math.random()*dur;
+      const drift = (Math.random()*120 - 60).toFixed(0) + "px";
+      s.style.left = left + "vw";
+      s.style.animationDuration = dur + "s";
+      s.style.animationDelay = delay + "s";
+      s.style.setProperty("--drift", drift);
+      s.style.opacity = (0.18 + Math.random()*0.42).toFixed(2);
+      heartsEl.appendChild(s);
     }
 
-    // Switch screens (no ugly envelope-open animation)
+    // Screen switch
     const stage = document.getElementById("stage");
     const envelope = document.getElementById("envelope");
     const cardView = document.getElementById("cardView");
@@ -302,60 +367,95 @@
         cardView.style.transform = "translateY(0)";
       });
     }
-
     envelope.addEventListener("click", openToCard);
     envelope.addEventListener("keydown", (e) => {
       if (e.key === "Enter" || e.key === " ") openToCard();
     });
 
-    // YES shows image
+    // YES shows image + title
     const yesBtn = document.getElementById("yesBtn");
     const noBtn = document.getElementById("noBtn");
     const result = document.getElementById("result");
     const yesImg = document.getElementById("yesImg");
+    const promptEl = document.getElementById("prompt");
+    const panel = document.getElementById("panel");
 
-    // preload image
+    // preload
     const pre = new Image();
     pre.src = yesImg.src;
 
     yesBtn.addEventListener("click", () => {
       yesBtn.disabled = true;
       noBtn.disabled = true;
+      promptEl.textContent = "";
       result.style.display = "block";
       requestAnimationFrame(() => result.classList.add("show"));
     });
 
-    // NO button dodge (cute, limited)
-    const panel = document.getElementById("panel");
+    // NO button prompts + dodge + then shrink into infinity
     let noCount = 0;
-    const maxDodges = 7;
+    const prompts = [
+      "Not that one 😌",
+      "Try again.",
+      "Wrong button.",
+      "Nice attempt.",
+      "Okay, last chance…"
+    ];
 
-    function dodge(){
+    function keepButtonVisible(x, y, btnW, btnH, areaW, areaH){
+      // clamp to always stay inside the panel
+      const pad = 14;
+      const minX = pad;
+      const minY = 76; // keep below the title area inside panel
+      const maxX = Math.max(minX, areaW - btnW - pad);
+      const maxY = Math.max(minY, areaH - btnH - pad);
+      return {
+        x: Math.min(maxX, Math.max(minX, x)),
+        y: Math.min(maxY, Math.max(minY, y))
+      };
+    }
+
+    function dodgeOrShrink(){
       if (noBtn.disabled) return;
+
+      // After 5 interactions, shrink away
+      if (noCount >= 5){
+        promptEl.textContent = "…and it’s gone.";
+        noBtn.style.transition = "transform 450ms ease, opacity 450ms ease";
+        noBtn.style.transform = "scale(0.02)";
+        noBtn.style.opacity = "0";
+        // keep it from blocking clicks
+        setTimeout(() => { noBtn.style.pointerEvents = "none"; }, 460);
+        return;
+      }
+
+      // otherwise dodge + prompt
+      promptEl.textContent = prompts[noCount] || "Nope.";
       noCount++;
 
       const panelRect = panel.getBoundingClientRect();
       const btnRect = noBtn.getBoundingClientRect();
 
-      const pad = 14;
-      const maxX = Math.max(0, panelRect.width - btnRect.width - pad*2);
-      const maxY = 140;
-
-      const x = pad + Math.random() * maxX;
-      const y = 64 + Math.random() * Math.max(20, maxY);
-
+      // make absolute within panel
       noBtn.style.position = "absolute";
-      noBtn.style.left = x + "px";
-      noBtn.style.top = y + "px";
+
+      // random target
+      const rx = Math.random() * (panelRect.width - btnRect.width);
+      const ry = 70 + Math.random() * (panelRect.height - btnRect.height - 90);
+
+      const p = keepButtonVisible(rx, ry, btnRect.width, btnRect.height, panelRect.width, panelRect.height);
+
+      noBtn.style.left = p.x + "px";
+      noBtn.style.top = p.y + "px";
       noBtn.style.transform = "rotate(" + ((Math.random()*10)-5).toFixed(0) + "deg)";
 
-      if (noCount >= maxDodges){
-        noBtn.removeEventListener("mouseenter", dodge);
-      }
+      // slight shrink each time (cute effect)
+      const s = Math.max(0.82, 1 - noCount*0.04);
+      noBtn.style.transform += " scale(" + s.toFixed(2) + ")";
     }
 
-    noBtn.addEventListener("mouseenter", dodge);
-    noBtn.addEventListener("click", dodge);
+    noBtn.addEventListener("mouseenter", dodgeOrShrink);
+    noBtn.addEventListener("click", dodgeOrShrink);
   </script>
 </body>
 </html>
