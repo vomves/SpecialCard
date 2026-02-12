@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>Valentine?</title>
   <meta name="theme-color" content="#ff3b7a" />
   <style>
@@ -15,8 +15,12 @@
       --shadow: 0 24px 70px #0009;
     }
     *{box-sizing:border-box}
+    html,body{height:100%}
     body{
-      margin:0; min-height:100vh; display:grid; place-items:center;
+      margin:0;
+      min-height:100svh; /* mobile-friendly viewport */
+      display:grid;
+      place-items:center;
       color:var(--txt);
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
       background:
@@ -25,12 +29,23 @@
         radial-gradient(900px 700px at 50% 90%, #22c55e15, transparent 55%),
         linear-gradient(160deg, var(--bg1), var(--bg2));
       overflow:hidden;
+      padding:
+        max(16px, env(safe-area-inset-top))
+        max(14px, env(safe-area-inset-right))
+        max(16px, env(safe-area-inset-bottom))
+        max(14px, env(safe-area-inset-left));
     }
 
-    /* floating hearts background (cute but subtle) */
-    .hearts{position:fixed; inset:0; pointer-events:none; opacity:.55; filter: drop-shadow(0 8px 18px #0008);}
+    /* floating hearts background (subtle) */
+    .hearts{
+      position:fixed; inset:0;
+      pointer-events:none;
+      opacity:.52;
+      filter: drop-shadow(0 8px 18px #0008);
+    }
     .heart{
-      position:absolute; font-size: clamp(14px, 2.4vw, 22px);
+      position:absolute;
+      font-size: clamp(14px, 2.5vw, 22px);
       animation: floatUp linear infinite;
       transform: translateY(110vh);
       will-change: transform;
@@ -39,14 +54,16 @@
       to { transform: translateY(-140vh) translateX(var(--drift)); }
     }
 
+    /* Full-screen responsive container */
     .wrap{
-      width:min(860px, 94vw);
+      width: min(980px, 96vw);
+      max-width: 980px;
       border:1px solid var(--ring);
-      border-radius:28px;
+      border-radius: clamp(18px, 3.2vw, 28px);
       background: linear-gradient(180deg, #0b1220cc, #0b1220a8);
       backdrop-filter: blur(10px);
       box-shadow: var(--shadow);
-      padding: 26px 20px 18px;
+      padding: clamp(16px, 3vw, 26px) clamp(14px, 2.5vw, 20px) clamp(12px, 2.2vw, 18px);
       position:relative;
     }
 
@@ -54,23 +71,25 @@
     .stage{
       display:grid;
       place-items:center;
-      padding: 18px 0 10px;
+      padding: clamp(10px, 2.4vw, 18px) 0 clamp(6px, 1.8vw, 10px);
     }
     .envelope{
-      width:min(520px, 92vw);
-      height: 320px;
+      width: min(560px, 92vw);
+      aspect-ratio: 13 / 8;
+      max-height: 360px;
       position:relative;
-      border-radius:22px;
+      border-radius: clamp(18px, 3vw, 22px);
       filter: drop-shadow(0 18px 28px #0007);
       cursor:pointer;
       user-select:none;
       outline:none;
+      -webkit-tap-highlight-color: transparent;
     }
     .env-body{
       position:absolute; inset:0;
       background: linear-gradient(180deg, #1a2236, #0f172a);
       border:1px solid var(--ring);
-      border-radius:22px;
+      border-radius: inherit;
       overflow:hidden;
     }
     .env-liner{
@@ -92,7 +111,8 @@
       position:absolute;
       left:50%; top:54%;
       transform: translate(-50%,-50%);
-      width:66px; height:66px;
+      width: clamp(52px, 12vw, 66px);
+      height: clamp(52px, 12vw, 66px);
       border-radius:999px;
       background: radial-gradient(circle at 30% 30%, #ff7ab6, #ff2d78 55%, #d61b5f);
       box-shadow: 0 14px 30px #ff2d7830, inset 0 2px 10px #ffffff22;
@@ -100,11 +120,12 @@
     }
     .addr{
       position:absolute;
-      left:24px; bottom:26px;
-      right:24px;
+      left: clamp(16px, 4vw, 24px);
+      right: clamp(16px, 4vw, 24px);
+      bottom: clamp(16px, 4vw, 26px);
       display:flex;
       justify-content:space-between;
-      gap:14px;
+      gap:12px;
       font-weight:800;
       color:#e7ecff;
       opacity:.95;
@@ -113,7 +134,7 @@
       display:block;
       font-weight:700;
       color:#c6d0ee;
-      font-size:12px;
+      font-size: clamp(11px, 2.4vw, 12px);
       margin-bottom:6px;
       letter-spacing:.08em;
       text-transform:uppercase;
@@ -121,41 +142,40 @@
     }
     .addr b{
       display:block;
-      font-size:18px;
+      font-size: clamp(16px, 3.6vw, 18px);
       letter-spacing:-.01em;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
-      max-width: 220px;
+      max-width: 48vw;
     }
     .hint{
-      margin-top:14px;
+      margin-top: clamp(10px, 2.4vw, 14px);
       color: var(--muted);
-      font-size:14px;
+      font-size: clamp(13px, 3vw, 14px);
       text-align:center;
       opacity:.95;
     }
 
-    /* ===== Valentine card (pretty like the first one) ===== */
+    /* ===== Valentine card ===== */
     .cardView{
       display:none;
       opacity:0;
       transform: translateY(10px);
       transition: opacity 260ms ease, transform 260ms ease;
-      padding: 8px 0 0;
+      padding: 0;
     }
     .card{
-      width:min(760px, 92vw);
+      width: min(820px, 92vw);
       border:1px solid var(--ring);
-      border-radius:24px;
-      padding:28px 24px 22px;
+      border-radius: clamp(18px, 3.2vw, 24px);
+      padding: clamp(18px, 3.4vw, 28px) clamp(16px, 3vw, 24px) clamp(16px, 2.8vw, 22px);
       background: linear-gradient(180deg, #0b1220cc, #0b1220aa);
       box-shadow: 0 18px 50px #0008;
       position:relative;
       margin: 0 auto;
       overflow:hidden;
     }
-    /* soft glow corners */
     .card::before{
       content:"";
       position:absolute; inset:-2px;
@@ -169,56 +189,54 @@
     .badge{
       position:relative;
       display:inline-flex; align-items:center; gap:10px;
-      padding:10px 14px; border-radius:999px;
+      padding: clamp(9px, 2.4vw, 10px) clamp(12px, 3vw, 14px);
+      border-radius:999px;
       border:1px solid var(--ring);
       background:#ffffff0a;
       color:var(--muted);
-      font-size:14px;
-      margin-bottom:14px;
+      font-size: clamp(13px, 3.1vw, 14px);
+      margin-bottom: clamp(10px, 2.6vw, 14px);
     }
     .badge b{color:var(--txt)}
     .title{
       position:relative;
-      margin:0 0 8px;
-      font-size: clamp(28px, 4.2vw, 44px);
+      margin:0 0 clamp(8px, 2vw, 10px);
+      font-size: clamp(30px, 6.4vw, 46px);
       line-height:1.06;
       letter-spacing:-0.02em;
-      text-align:left;
-    }
-    .subtitle{
-      position:relative;
-      margin:10px 0 0;
-      color:var(--muted);
-      font-size: clamp(15px, 2.2vw, 18px);
-      line-height:1.45;
     }
 
     .panel{
       position:relative;
-      margin-top:18px;
-      padding:18px;
-      border-radius:18px;
+      margin-top: clamp(14px, 3vw, 18px);
+      padding: clamp(16px, 3.2vw, 18px);
+      border-radius: clamp(16px, 3vw, 18px);
       border:1px solid var(--ring);
       background:#0b1220a8;
       overflow:hidden;
-      min-height: 170px; /* ensures NO button can move without leaving panel */
+      min-height: clamp(200px, 34vw, 240px); /* room for dodging on iPhone */
     }
 
     .row{
       position:relative;
-      display:flex; gap:14px; flex-wrap:wrap; align-items:center; justify-content:center;
-      margin-top:10px;
+      display:flex;
+      gap: clamp(12px, 3vw, 14px);
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:center;
+      margin-top: clamp(6px, 1.6vw, 10px);
       padding-bottom: 6px;
     }
 
     button{
       border:none; cursor:pointer;
       font-weight:900; letter-spacing:.06em; text-transform:uppercase;
-      padding:14px 18px;
-      border-radius:14px;
-      min-width:170px;
+      padding: clamp(14px, 3.4vw, 14px) clamp(16px, 3.8vw, 18px);
+      border-radius: clamp(12px, 3vw, 14px);
+      min-width: clamp(148px, 38vw, 190px);
       transition: transform .12s ease, filter .12s ease, opacity .2s ease;
       user-select:none;
+      -webkit-tap-highlight-color: transparent;
     }
     button:active{transform: scale(.98)}
     .yes{
@@ -233,37 +251,40 @@
       box-shadow: 0 14px 26px #0006;
       position:relative;
       z-index:2;
+      touch-action: manipulation;
     }
 
     .prompt{
       position:relative;
-      margin-top:12px;
+      margin-top: clamp(10px, 2.4vw, 12px);
       text-align:center;
       color:#cbd5e1;
-      font-weight:700;
-      font-size:14px;
-      min-height: 20px;
+      font-weight:800;
+      font-size: clamp(13px, 3.2vw, 14px);
+      min-height: 22px;
     }
 
     .result{
-      margin-top:16px;
+      margin-top: clamp(14px, 3vw, 16px);
       display:none;
       text-align:center;
     }
     .dateTitle{
-      font-size: clamp(20px, 2.8vw, 26px);
-      font-weight:900;
+      font-size: clamp(20px, 5vw, 28px);
+      font-weight:950;
       letter-spacing:-0.01em;
-      margin: 0 0 12px;
+      margin: 0 0 clamp(10px, 2.4vw, 12px);
     }
     .result img{
-      width:min(520px, 100%);
-      border-radius:18px;
+      width:min(560px, 100%);
+      max-height: min(60svh, 520px);
+      object-fit: cover;
+      border-radius: clamp(16px, 3.4vw, 18px);
       border:1px solid #ffffff26;
       box-shadow: 0 18px 40px #0006;
       opacity:0;
       transform: scale(.985);
-      transition: opacity 280ms ease, transform 280ms ease;
+      transition: opacity 260ms ease, transform 260ms ease;
     }
     .result.show img{
       opacity:1;
@@ -304,9 +325,7 @@
     <div class="cardView" id="cardView">
       <div class="card">
         <div class="badge">💌 <span>For</span> <b id="toBadge">bb</b></div>
-
         <h1 class="title">Will you be my Valentine?</h1>
-        <p class="subtitle">One question. Two buttons. Only one correct answer.</p>
 
         <div class="panel" id="panel">
           <div class="row" id="row">
@@ -334,7 +353,7 @@
     document.getElementById("fromName").textContent = from;
     document.getElementById("toBadge").textContent = to;
 
-    // Floating hearts (subtle, non-cheesy)
+    // Floating hearts (subtle)
     const heartsEl = document.getElementById("hearts");
     const heartChars = ["💗","💖","💘","💝","💞","💕","💓","❤️","✨"];
     const count = 18;
@@ -388,11 +407,13 @@
       yesBtn.disabled = true;
       noBtn.disabled = true;
       promptEl.textContent = "";
+      // keep NO from covering image in odd cases
+      noBtn.style.display = "none";
       result.style.display = "block";
       requestAnimationFrame(() => result.classList.add("show"));
     });
 
-    // NO button prompts + dodge + then shrink into infinity
+    // NO prompts + 5 dodges then shrink away (but stays visible while dodging)
     let noCount = 0;
     const prompts = [
       "Not that one 😌",
@@ -402,60 +423,56 @@
       "Okay, last chance…"
     ];
 
-    function keepButtonVisible(x, y, btnW, btnH, areaW, areaH){
-      // clamp to always stay inside the panel
-      const pad = 14;
-      const minX = pad;
-      const minY = 76; // keep below the title area inside panel
-      const maxX = Math.max(minX, areaW - btnW - pad);
-      const maxY = Math.max(minY, areaH - btnH - pad);
-      return {
-        x: Math.min(maxX, Math.max(minX, x)),
-        y: Math.min(maxY, Math.max(minY, y))
-      };
-    }
+    function clamp(val, min, max){ return Math.max(min, Math.min(max, val)); }
 
     function dodgeOrShrink(){
       if (noBtn.disabled) return;
 
-      // After 5 interactions, shrink away
       if (noCount >= 5){
-        promptEl.textContent = "…and it’s gone.";
+        promptEl.textContent = "…and it disappeared.";
         noBtn.style.transition = "transform 450ms ease, opacity 450ms ease";
         noBtn.style.transform = "scale(0.02)";
         noBtn.style.opacity = "0";
-        // keep it from blocking clicks
         setTimeout(() => { noBtn.style.pointerEvents = "none"; }, 460);
         return;
       }
 
-      // otherwise dodge + prompt
       promptEl.textContent = prompts[noCount] || "Nope.";
       noCount++;
 
       const panelRect = panel.getBoundingClientRect();
       const btnRect = noBtn.getBoundingClientRect();
 
-      // make absolute within panel
+      // absolute positioning inside panel
       noBtn.style.position = "absolute";
 
-      // random target
-      const rx = Math.random() * (panelRect.width - btnRect.width);
-      const ry = 70 + Math.random() * (panelRect.height - btnRect.height - 90);
+      const padX = 14;
+      const padYTop = 76; // keep below the top area of the panel
+      const padYBottom = 14;
 
-      const p = keepButtonVisible(rx, ry, btnRect.width, btnRect.height, panelRect.width, panelRect.height);
+      const maxX = panelRect.width - btnRect.width - padX;
+      const maxY = panelRect.height - btnRect.height - padYBottom;
 
-      noBtn.style.left = p.x + "px";
-      noBtn.style.top = p.y + "px";
-      noBtn.style.transform = "rotate(" + ((Math.random()*10)-5).toFixed(0) + "deg)";
+      // Random positions but clamped so the button is always visible
+      let x = padX + Math.random() * Math.max(0, maxX - padX);
+      let y = padYTop + Math.random() * Math.max(0, maxY - padYTop);
 
-      // slight shrink each time (cute effect)
-      const s = Math.max(0.82, 1 - noCount*0.04);
-      noBtn.style.transform += " scale(" + s.toFixed(2) + ")";
+      x = clamp(x, padX, maxX);
+      y = clamp(y, padYTop, maxY);
+
+      noBtn.style.left = x + "px";
+      noBtn.style.top = y + "px";
+
+      // small tilt + slight shrink each time (still visible)
+      const tilt = ((Math.random()*10)-5).toFixed(0);
+      const s = Math.max(0.88, 1 - noCount*0.03);
+      noBtn.style.transform = `rotate(${tilt}deg) scale(${s.toFixed(2)})`;
     }
 
+    // works on iPhone (tap + hover-like)
     noBtn.addEventListener("mouseenter", dodgeOrShrink);
     noBtn.addEventListener("click", dodgeOrShrink);
+    noBtn.addEventListener("touchstart", dodgeOrShrink, {passive:true});
   </script>
 </body>
 </html>
